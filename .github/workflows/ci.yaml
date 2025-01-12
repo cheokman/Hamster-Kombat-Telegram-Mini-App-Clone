@@ -1,7 +1,7 @@
 name: Continuous Integration
 on: [push]
 jobs:
-  compile:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Node Modules
@@ -33,3 +33,23 @@ jobs:
         with:
           name: backend-artifact
           path: dist/artifact.zip
+  lint:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Cache Node Modules
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: node-modules-cache
+
+      - name: Install Dependencies
+        if: steps.caches.outputs.cache-hit != 'true'
+        run: npm i
+
+      - name: Lint the code
+        run: npm run lint
