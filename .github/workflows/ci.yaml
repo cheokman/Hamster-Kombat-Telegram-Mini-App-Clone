@@ -84,3 +84,30 @@ jobs:
 
       - name: Check for security issue
         run: npm audit --audit-level=medium
+
+  static-analysis:
+    needs: [build]
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+        with:
+          languages: javascript
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 23.4.x
+
+      - name: Install Deps
+        run: npm i
+
+      - name: Build
+        run: npm run build
+
+      - name: Perform Analysis
+        uses: github/codeql-action/analyze@v1
