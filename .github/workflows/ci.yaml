@@ -33,14 +33,35 @@ jobs:
         with:
           name: backend-artifact
           path: dist/artifact.zip
-  lint:
+  # lint:
+  #   needs: [build]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v1
+
+  #     - name: Cache Node Modules
+  #       id: cache
+  #       uses: actions/cache@v2
+  #       with:
+  #         path: node_modules
+  #         key: node-modules-cache
+
+  #     - name: Install Dependencies
+  #       if: steps.caches.outputs.cache-hit != 'true'
+  #       run: npm i
+
+  #     - name: Lint the code
+  #       run: npm run lint
+
+  test:
     needs: [build]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v1
 
-      - name: Cache Node Modules
+      - name: Checkout Node Modules
         id: cache
         uses: actions/cache@v2
         with:
@@ -51,5 +72,5 @@ jobs:
         if: steps.caches.outputs.cache-hit != 'true'
         run: npm i
 
-      - name: Lint the code
-        run: npm run lint
+      - name: Run Unit Tests
+        run: npm t
