@@ -32,4 +32,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: backend-artifact
-          path: backend/dist/artifact.zip
+          path: dist/artifact.zip
