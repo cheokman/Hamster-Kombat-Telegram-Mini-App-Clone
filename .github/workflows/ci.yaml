@@ -26,10 +26,10 @@ jobs:
         run: npm run build
 
       - name: Generate Artifact
-        run: cd build && zip -r artifact.zip ./ -x '*.git*'
+        run: cd dist && zip -r artifact.zip ./ -x '*.git*'
 
       - name: Store Artifact
         uses: actions/upload-artifact@v4
         with:
           name: backend-artifact
-          path: backend/build/artifact.zip
+          path: backend/dist/artifact.zip
